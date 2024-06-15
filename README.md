@@ -12,26 +12,20 @@ La bibliothèque utilise un frame buffer intermédiaire ente les primitives grap
 
 Les primitives graphiques sont minimalistes, elles pourront être complétées en fonction des besoins.
 
-## Exemples
-Des exemples d'implemantation sont données dans les repository :
-https://github.com/DADDesign-Projects/DEMO_DaisyGFX_ST7735
-https://github.com/DADDesign-Projects/DEMO_DaisyGFX_ST7789
 
-## Développement
+## Mise en oeuvre
 Le code est modifiable et compilable sous VS Code dans l’environnement de développement du Daisy Seed (voir le https://github.com/electro-smith).
 
-## Configurations
-Le fichier ../UserConfig.h permet d’adapter la bibliothèque aux différentes implémentations matérielles.
+### Configuraion
+1. Creez un projet avec l'outil helper.py (ou autre...).
+2. Clonez la librairie dans le dossier DaisySeedGFX à l'interieur de votre dossier projet.
+3. Editez le fichier Makefile et ajoutez DaisySeedGFX/Frame.cpp DaisySeedGFX/GFX.cpp DaisySeedGFX/TFT_SPI.cpp dans la ligne CPP_SOURCES.
+4. Copiez le fichier UserConfig.h dans voire dossier projet et configurez le en fonction de votre écran et des pins utilisées. 
 
-Le fichiers Makefile c_cpp_properties.json sont à adapter en fonction de l’emplacement des librairies libDaisy et DaisySP: 
- Makefile : 
-  LIBDAISY_DIR = ../../../Desktop/DaisyExamples/libDaisy/
-  DAISYSP_DIR = ../../../Desktop/DaisyExamples/DaisySP/
-
-.vscode/c_cpp_properties.json :
-"includePath": [
-  "${workspaceFolder}/**",
-  "${workspaceFolder}/../../../Desktop/DaisyExamples/libDaisy//**",
-  "${workspaceFolder}/../../../Desktop/DaisyExamples/DaisySP//**"
-
+### Fonts
 Pour créer des fonts utilisez l’outil https://rop.nl/truetype2gfx/. Chaque font est enregistrée un fichier xxx.h.
+
+### Exemples
+Des exemples d'implemantation sont données dans les repository :
+1. https://github.com/DADDesign-Projects/DEMO_DaisyGFX_ST7735
+2. https://github.com/DADDesign-Projects/DEMO_DaisyGFX_ST7789
