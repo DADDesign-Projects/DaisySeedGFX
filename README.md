@@ -16,7 +16,7 @@ Les primitives graphiques sont minimalistes, elles pourront être complétées e
 ## Mise en oeuvre
 Le code est modifiable et compilable sous VS Code dans l’environnement de développement du Daisy Seed (voir le https://github.com/electro-smith).
 
-### Configuraion
+### Configuration
 1. Creez un projet avec l'outil helper.py (ou autre...).
 2. Clonez la librairie dans le dossier DaisySeedGFX à l'interieur de votre dossier projet.
 3. Editez le fichier Makefile et ajoutez DaisySeedGFX/Frame.cpp DaisySeedGFX/GFX.cpp DaisySeedGFX/TFT_SPI.cpp dans la ligne CPP_SOURCES.
