@@ -290,17 +290,37 @@ void cGFX::drawFillCircle(uint16_t centerX, uint16_t centerY, uint16_t radius, c
 }
 
 //-----------------------------------------------------------------------------------
-// Tracer une image 8bits par couleurs
+// Tracer une image 8bits par couleurs (depreciated)
 void cGFX::drawR8G8B8Image(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, const uint8_t *pImg){
     RGB *pFrame;
     RGB *pEndLigne;
-    
+    const uint8_t *pImgLine;
+
     for (uint16_t PosY = y; PosY < (y+dy); PosY++){
         pFrame = getPtr(x, PosY);
         pEndLigne = getPtr(x+dx, PosY);
+        pImgLine = pImg+(dx*(PosY-y)*3); 
         while (pFrame < pEndLigne){
-            pFrame->set(cColor((*(pImg+2)),(*(pImg+1)),(*(pImg))));
-            pImg = pImg+3;
+            pFrame->set(cColor((*(pImgLine+2)),(*(pImgLine+1)),(*(pImgLine))));
+            pImgLine = pImgLine+3;
+            pFrame++;
+        }
+    }
+}
+//-----------------------------------------------------------------------------------
+// Tracer une image
+void cGFX::drawImage(uint16_t x, uint16_t y, cImage &Image){
+    RGB *pFrame;
+    RGB *pEndLigne;
+    const uint8_t *pImgLine;
+
+    for (uint16_t PosY = y; PosY < (y+Image.getHeight()); PosY++){
+        pFrame = getPtr(x, PosY);
+        pEndLigne = getPtr(x+Image.getWith(), PosY);
+        pImgLine = Image.GetPtrLine(PosY-y); 
+        while (pFrame < pEndLigne){
+            pFrame->set(Image.getColor(pImgLine));
+            pImgLine = pImgLine + Image.getPixelSize();
             pFrame++;
         }
     }

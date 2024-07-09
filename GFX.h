@@ -11,6 +11,79 @@
 #define PROGMEM
 
 constexpr float __PI = 3.14159265358979;
+//***********************************************************************************
+// CImage
+// Gestion d'une image
+//
+enum class TypeImage{
+    R8G8B8,
+    B8G8R8,
+    R8G8B8A8,
+    B8G8R8A8
+};
+
+// cImage
+class cImage {
+public:
+    // Constructeur
+    cImage(uint16_t With, uint16_t Height, TypeImage Type, const uint8_t* pImage){
+        m_With = With,
+        m_Height = Height;
+        m_Type = Type;
+        m_pImage = pImage;
+    }
+    // Lecture de la largeur de l'image
+    inline uint16_t getWith(){
+        return m_With;
+    } 
+    // Lecture de la hauteur de l'image
+    inline uint16_t getHeight(){
+        return m_Height;
+    } 
+    // Lecture de l'adresse du premier pixel de la la ligne spécifiée
+    inline const uint8_t* GetPtrLine(uint16_t Line){
+        switch(m_Type){
+            case TypeImage::R8G8B8 :
+            case TypeImage::B8G8R8 :
+                return m_pImage+(m_With*(Line)*3); 
+            case TypeImage::R8G8B8A8 :
+            case TypeImage::B8G8R8A8 :
+                return m_pImage+(m_With*(Line)*4); 
+        }
+        return nullptr;
+    }
+    // Lecteur de la couleur du pixel
+    inline cColor getColor(const uint8_t* pImage){
+        switch(m_Type){
+            case TypeImage::R8G8B8 :
+                return cColor((*(pImage)),(*(pImage+1)),(*(pImage+2)));
+            case TypeImage::B8G8R8 :
+                return cColor((*(pImage+2)),(*(pImage+1)),(*(pImage)));
+            case TypeImage::R8G8B8A8 :
+                return cColor((*(pImage)),(*(pImage+1)),(*(pImage+2)),(*(pImage+3))); 
+            case TypeImage::B8G8R8A8 :
+                return cColor((*(pImage+2)),(*(pImage+1)),(*(pImage)),(*(pImage+3))); 
+        }
+        return cColor(0,0,0);
+    }
+    // Lecture de la taile d'un pixel
+    inline uint8_t getPixelSize(){
+        switch(m_Type){
+            case TypeImage::R8G8B8 :
+            case TypeImage::B8G8R8 :
+                return 3;
+            case TypeImage::R8G8B8A8 :
+            case TypeImage::B8G8R8A8 :
+                return 4;
+        }
+        return 0;        
+    }
+protected :
+    uint16_t m_With;
+    uint16_t m_Height;
+    TypeImage m_Type;
+    const uint8_t* m_pImage;
+};
 
 //***********************************************************************************
 // CFont
@@ -169,8 +242,10 @@ public:
     void drawArc(uint16_t centerX, uint16_t centerY, uint16_t radius, uint16_t AlphaIn, uint16_t AlphaOut, cColor Color);
     // Tracer un cercle plein
     void drawFillCircle(uint16_t centerX, uint16_t centerY, uint16_t radius, cColor Color);
-    // Tracer une image 8bits par couleurs
+    // Tracer une image 8bits par couleurs (depreciated)
     void drawR8G8B8Image(uint16_t x, uint16_t y, uint16_t dx, uint16_t dy, const uint8_t *pImg);
+    // Tracer une image
+    void drawImage(uint16_t x, uint16_t y, cImage &Image);
 
     // ==========================================================================
     // Dessiner du texte
