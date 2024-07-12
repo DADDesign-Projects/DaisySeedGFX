@@ -106,17 +106,17 @@ class Cmd_RAMWR {
 //*********************************************************************************** 
 struct cColor { 
     // Constructeur
-    cColor(uint8_t R, uint8_t G, uint8_t B, uint8_t Trans=255){
+    cColor(uint8_t R, uint8_t G, uint8_t B, uint8_t Alpha=255){
         m_R = R;
         m_G = G;
         m_B = B;
-        m_Trans = Trans;
+        m_A = Alpha;
     }
 
     uint8_t m_R;
     uint8_t m_G;
     uint8_t m_B;
-    uint8_t m_Trans;
+    uint8_t m_A;
 };
 
 //***********************************************************************************
@@ -128,9 +128,19 @@ struct RGB {
 	// --------------------------------------------------------------------------
 	// Mise à jour d'un pixel et indication que le bloc a changé d'état
     void inline set(cColor Color){
-        R = Color.m_R;
-        G = Color.m_G;
-        B = Color.m_B;
+        if(Color.m_A == 0){
+            return;
+        }else if(Color.m_A == 255){
+            R = Color.m_R;
+            G = Color.m_G;
+            B = Color.m_B;
+        }else{
+            uint16_t invAlpha = 255 - Color.m_A;
+            uint16_t Alpha = Color.m_A;
+            R = (uint8_t) (((Alpha * (uint16_t) Color.m_R) +  (invAlpha * (uint16_t)R)) / (uint16_t)255);
+            G = (uint8_t) (((Alpha * (uint16_t) Color.m_G) +  (invAlpha * (uint16_t)G)) / (uint16_t)255);
+            B = (uint8_t) (((Alpha * (uint16_t) Color.m_B) +  (invAlpha * (uint16_t)B)) / (uint16_t)255);
+        }
         *m_pChange = true;
     }
 

@@ -11,6 +11,8 @@
 #define PROGMEM
 
 constexpr float __PI = 3.14159265358979;
+constexpr float __PI_2 = 1.57079632679489;
+
 //***********************************************************************************
 // CImage
 // Gestion d'une image

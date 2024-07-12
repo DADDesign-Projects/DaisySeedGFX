@@ -256,37 +256,51 @@ void cGFX::drawArc(uint16_t centerX, uint16_t centerY, uint16_t radius, uint16_t
 // Dessin d'un cercle plein
 void cGFX::drawFillCircle(uint16_t centerX, uint16_t centerY, uint16_t radius, cColor Color)
 {
-    int x = 0;
-    int y = radius;
-    int m = 5 - 4 * radius;
+    int32_t  x  = 0;
+    int32_t  dx = 1;
+    int32_t  dy = radius+radius;
+    int32_t  p  = -(radius>>1);
 
-    while (x <= y)
-    {
-        RGB *pFrame = getPtr(centerX - y, centerY - x);
-        for (int xx = centerX - y; xx <= centerX + y; xx++)
-            pFrame++->set(Color);
-
-        pFrame = getPtr(centerX - y, centerY + x);
-        for (int xx = centerX - y; xx <= centerX + y; xx++)
-            pFrame++->set(Color);
-
-        if (m > 0)
-        {
-            pFrame = getPtr(centerX - x, centerY - y);
-            for (int xx = centerX - x; xx <= centerX + x; xx++)
+    uint16_t x1 = centerX - radius;
+    uint16_t x2 = x1 + dy+1;
+    uint16_t y1 = centerY;   
+    RGB *pFrame = getPtr(x1, y1);
+    for (int xx = x1; xx <= x2; xx++)
+        pFrame++->set(Color);
+    
+    while(x<radius){
+        if(p>=0) {
+            x1 = centerX - x;
+            x2 = x1 + dx;
+            y1 = centerY + radius;
+            pFrame = getPtr(x1, y1);
+            for (int xx = x1; xx <= x2; xx++)
                 pFrame++->set(Color);
+            y1 = centerY - radius;
+            pFrame = getPtr(x1, y1);
+            for (int xx = x1; xx <= x2; xx++)
+                pFrame++->set(Color);            
 
-            pFrame = getPtr(centerX - x, centerY + y);
-            for (int xx = centerX - x; xx <= centerX + x; xx++)
-                pFrame++->set(Color);
-
-            y--;
-            m -= 8 * y;
+            dy-=2;
+            p-=dy;
+            radius--;
         }
-
+        dx+=2;
+        p+=dx;
         x++;
-        m += 8 * x + 4;
-    }
+        
+        x1 = centerX - radius;
+        x2 = x1 + dy+1;
+        y1 = centerY + x;
+        pFrame = getPtr(x1, y1);
+        for (int xx = x1; xx <= x2; xx++)
+            pFrame++->set(Color);    
+    
+        y1 = centerY - x;
+        pFrame = getPtr(x1, y1);
+        for (int xx = x1; xx <= x2; xx++)
+            pFrame++->set(Color); 
+  }
 }
 
 //-----------------------------------------------------------------------------------
