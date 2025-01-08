@@ -1,3 +1,10 @@
+# Notice: 
+**A new version of the library is now available at** https://github.com/DADDesign-Projects/DaisySeedGFX2.
+
+This new version introduces layer management and other enhancements.
+
+The current version is now obsolete and will no longer be updated.
+
 # DaisySeedGFX
 TFT graphical display library for Daisy Seed. ST7789 and ST7735 driver
 
